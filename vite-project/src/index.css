@@ -1,0 +1,22 @@
+.active hr {
+    
+}
+
+.hide-scrollbar {
+  overflow: auto; /* یا scroll */
+  scrollbar-width: none; /* مخصوص Firefox */
+  -ms-overflow-style: none; /* مخصوص IE و Edge قدیمی */
+}
+
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+
+@theme{
+    --color-primary: #5f6fff;
+    --color-primary-dull: #D63854;
+}
+
+@import "tailwindcss";
