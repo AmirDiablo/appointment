@@ -31,13 +31,13 @@ const Footer = () => {
                     </ul>
                 </div>
 
-                {/* copy right text */}
+            </div>
+
+            {/* copy right text */}
                 <div>
                     <br />
                     <p className="py-5 text-sm text-center">CopyRight 2025 © Prescripto - All Right Reserved</p>
                 </div>
-
-            </div>
         </div>
      );
 }
