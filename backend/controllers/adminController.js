@@ -10,9 +10,10 @@ const addDoctors = async (req, res) => {
         const { name, email, password, image, speciality, degree, experience, about, available, fees, address, date, slots_booked } = req.body
         const imageFile = req.file
 
-        if( !name || !email || !password || !image || !speciality || !degree || !experience || !about || !available || !fees || !address || !date || !slots_booked) {
+        if( !name || !email || !password || !imageFile || !speciality || !degree || !experience || !about || !fees || !address ) {
             return res.json({success: false, message: "Missing details"})
         }
+
 
         if(!validator.isEmail(email)) {
             return res.json({success: false, message: "Please enter a valid email"})

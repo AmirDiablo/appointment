@@ -3,4 +3,11 @@
     --color-primary-dull: #D63854;
 }
 
+
+.hide-scrollbar {
+  overflow: auto; /* یا scroll */
+  scrollbar-width: none; /* مخصوص Firefox */
+  -ms-overflow-style: none; /* مخصوص IE و Edge قدیمی */
+}
+
 @import "tailwindcss";
