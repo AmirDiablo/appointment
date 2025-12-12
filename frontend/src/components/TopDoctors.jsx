@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 /* import { doctors } from "../assets/assets/assets_frontend/assets"; */
-import { AppContext } from "../context/AppContext";
+import {AppContext} from "../context/AppContext"
 import { useContext } from "react";
+import { useEffect } from "react";
 
 const TopDoctors = () => {
 
