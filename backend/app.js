@@ -6,6 +6,7 @@ import mongoose from "mongoose"
 import connectCloudinary from "./config/cloudinary.js";
 import adminRoute from "./routes/adminRoute.js"
 import doctorRoute from "./routes/doctorRoute.js"
+import userRoute from "./routes/userRoute.js"
 
 const app = express()
 connectCloudinary()
@@ -15,6 +16,7 @@ app.use(cors())
 
 app.use("/api/admin", adminRoute)
 app.use("/api/doctor", doctorRoute)
+app.use("/api/user", userRoute)
 
 mongoose.connect(process.env.MONGO_URI)
 .then(()=> {
