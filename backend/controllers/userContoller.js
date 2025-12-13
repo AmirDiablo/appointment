@@ -45,7 +45,7 @@ const loginUser = async (req, res) => {
         const isMatch = await bcrycpt.compare(password, user.password)
 
         if(isMatch) {
-            const token = await jwt({id: user._id}, process.env.JWT_SECRET)
+            const token = await jwt.sign({id: user._id}, process.env.JWT_SECRET)
             res.json({success: true, token})
         } else {
             res.json({success: false, message: "Invalid credentials"})
@@ -56,4 +56,15 @@ const loginUser = async (req, res) => {
     }
 }
 
-export {registerUser, loginUser}
+const getProfile = async (req, res) => {
+    try {
+        const userId = req.user._id
+        const userData = await User.findById(userId).select('-password')
+
+        res.json({success: true, userData})
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export {registerUser, loginUser, getProfile}
