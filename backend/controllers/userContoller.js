@@ -6,6 +6,7 @@ import {v2 as cloudinary} from "cloudinary"
 import Doctor from "../models/doctorModel.js"
 import Appointment from "../models/appointmentModel.js"
 
+
 const registerUser = async (req, res) => {
     try {
         const {name, email, password} = req.body
@@ -156,4 +157,36 @@ const listAppointment = async (req, res) => {
     }
 }
 
-export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment}
+const cancelAppointment = async (req, res) => {
+    try {
+        const userId = req.user._id
+        const {appointmentId} = req.body
+
+        const appointmentData = await Appointment.findById(appointmentId)
+
+        //verify appointment user
+        if (appointmentData.userId !== userId) {
+            return res.json({success: false, message: "Unauthorized action"})
+        }
+
+        await Appointment.findByIdAndUpdate(appointmentId, {cancelled: true})
+
+        //releasing doctor slot
+        const {docId, slotDate, slotTime} = appointmentData
+
+        const doctorData = await Doctor.findById(docId)
+
+        let slots_booked = doctorData.slots_booked
+
+        slots_booked[slotDate] = slots_booked[slotDate].filter(e=> e !== slotTime)
+
+        await Doctor.findByIdAndUpdate(docId, {slots_booked})
+
+        res.json({success: true, message: "Appointment Cancelled"})
+
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment}
