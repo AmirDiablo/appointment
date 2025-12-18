@@ -7,8 +7,13 @@ import connectCloudinary from "./config/cloudinary.js";
 import adminRoute from "./routes/adminRoute.js"
 import doctorRoute from "./routes/doctorRoute.js"
 import userRoute from "./routes/userRoute.js"
+import stripeWebhooks from "./controllers/stripeWebhook.js"
 
 const app = express()
+
+//stripe webhooks Route
+app.use('/api/stripe', express.raw({type: "application/json"}), stripeWebhooks)
+
 connectCloudinary()
 
 app.use(express.json())

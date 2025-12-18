@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken"
 import {v2 as cloudinary} from "cloudinary"
 import Doctor from "../models/doctorModel.js"
 import Appointment from "../models/appointmentModel.js"
+import stripe from "stripe"
 
 
 const registerUser = async (req, res) => {
@@ -189,4 +190,54 @@ const cancelAppointment = async (req, res) => {
     }
 }
 
-export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment}
+
+// api for payment
+const payForAppointment = async (req, res) => {
+  try {
+    const {appointmentId} = req.body
+    const {origin} = req.headers
+
+    const appointment = await Appointment.findById(appointmentId)
+    if (!appointment || appointment.cancelled) {
+      return res.json({success: false, message: "Appointment not found"})
+    }
+
+    if (appointment.payment) {
+      return res.json({success: false, message: "Appointment already paid"})
+    }
+
+    const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY)
+
+    const line_items = [{
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: `Doctor Visit - ${appointment.docData.name}`
+        },
+        unit_amount: Math.floor(appointment.amount) * 100
+      },
+      quantity: 1
+    }]
+
+    const session = await stripeInstance.checkout.sessions.create({
+      success_url: `${origin}/my-appointments?paid=true`,
+      cancel_url: `${origin}/my-appointments?cancelled=true`,
+      line_items,
+      mode: "payment",
+      metadata: {
+        appointmentId: appointment._id.toString()
+      },
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60
+    })
+
+    appointment.paymentLink = session.url
+    await appointment.save()
+
+    res.json({success: true, url: session.url})
+  } catch (error) {
+    res.json({success: false, message: error.message})
+  }
+}
+
+
+export {registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, payForAppointment}
