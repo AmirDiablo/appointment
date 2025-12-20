@@ -81,4 +81,12 @@ const allDoctors = async (req, res) => {
     }
 }
 
-export {addDoctors, adminLogin, allDoctors}
+const appointmentsAdmin = async (req, res) => {
+    try {
+        const appointments = await Appointment.find({})
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export {addDoctors, adminLogin, allDoctors, appointmentsAdmin}
