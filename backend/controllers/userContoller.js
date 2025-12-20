@@ -166,7 +166,7 @@ const cancelAppointment = async (req, res) => {
         const appointmentData = await Appointment.findById(appointmentId)
 
         //verify appointment user
-        if (appointmentData.userId !== userId) {
+        if (appointmentData.userId != userId) {
             return res.json({success: false, message: "Unauthorized action"})
         }
 
@@ -189,7 +189,6 @@ const cancelAppointment = async (req, res) => {
         res.json({success: false, message: error.message})
     }
 }
-
 
 // api for payment
 const payForAppointment = async (req, res) => {
