@@ -4,6 +4,7 @@ import {v2 as cloudinary} from "cloudinary"
 import Doctor from "../models/doctorModel.js"
 import jwt from "jsonwebtoken"
 import Appointment from "../models/appointmentModel.js"
+import User from "../models/userModel.js"
 
 //API for adding doctors
 const addDoctors = async (req, res) => {
@@ -126,7 +127,7 @@ const adminDashboard = async (req, res) => {
 
         const dashData = {
             doctors: doctors.length,
-            users: users.length,
+            patients: users.length,
             appointments: appointments.length,
             latestAppointments: appointments.reverse().slice(0, 5)
         }
