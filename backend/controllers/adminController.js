@@ -117,4 +117,24 @@ const cancelAppointment = async (req, res) => {
     }
 }
 
-export {addDoctors, adminLogin, allDoctors, appointmentsAdmin, cancelAppointment}
+
+const adminDashboard = async (req, res) => {
+    try {
+        const doctors = await Doctor.find({})
+        const users = await User.find({})
+        const appointments = await Appointment.find({})
+
+        const dashData = {
+            doctors: doctors.length,
+            users: users.length,
+            appointments: appointments.length,
+            latestAppointments: appointments.reverse().slice(0, 5)
+        }
+
+        res.json({success: true, dashData})
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export {addDoctors, adminLogin, allDoctors, appointmentsAdmin, cancelAppointment, adminDashboard}
