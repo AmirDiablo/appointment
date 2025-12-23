@@ -1,6 +1,7 @@
 import Doctor from "../models/doctorModel.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
+import Appointment from "../models/appointmentModel.js"
 
 
 const changeAvailibility = async (req, res) => {
@@ -47,4 +48,15 @@ const login = async (req, res) => {
     }
 }
 
-export {changeAvailibility, doctorList, login}
+const doctorAppointments = async (req, res) => {
+    try {
+        const {docId} = req.body
+        const appointments = await Appointment.find({docId})
+
+        res.json({success: true, appointments})
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export {changeAvailibility, doctorList, login, doctorAppointments}
