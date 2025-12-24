@@ -13,8 +13,8 @@ const authDoctor = async (req, res, next)=> {
 
     try{
         const token_decode  = jwt.verify(dToken, process.env.JWT_SECRET)
-        
-        req.body.docId = token_decode.id
+    
+        req.docId = token_decode.id
         next()
     }catch(error){
         res.status(401).json({error: "request is not authorized"})

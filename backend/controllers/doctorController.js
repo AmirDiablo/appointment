@@ -50,8 +50,9 @@ const login = async (req, res) => {
 
 const doctorAppointments = async (req, res) => {
     try {
-        const {docId} = req.body
+        const docId = req.docId
         const appointments = await Appointment.find({docId})
+        console.log(appointments)
 
         res.json({success: true, appointments})
     } catch (error) {
