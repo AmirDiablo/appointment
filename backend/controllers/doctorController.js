@@ -52,7 +52,6 @@ const doctorAppointments = async (req, res) => {
     try {
         const docId = req.docId
         const appointments = await Appointment.find({docId})
-        console.log(appointments)
 
         res.json({success: true, appointments})
     } catch (error) {
@@ -62,11 +61,12 @@ const doctorAppointments = async (req, res) => {
 
 const completeAppointment = async (req, res)=> {
     try {
-        const {docId, appontmentId} = req.body
-        const appointmentData = await Appointment.findById(appontmentId)
+        const {appointmentId} = req.body
+        const docId = req.docId
+        const appointmentData = await Appointment.findById(appointmentId)
 
         if(appointmentData && appointmentData.docId === docId) {
-            await Appointment.findByIdAndUpdate(appontmentId, {isCompleted: true})
+            await Appointment.findByIdAndUpdate(appointmentId, {isCompleted: true})
             return res.json({success: true, message: "Appointment Completed"})
         } else {
             return res.json({success: false, message: "Mark failed"})
