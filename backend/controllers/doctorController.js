@@ -60,4 +60,21 @@ const doctorAppointments = async (req, res) => {
     }
 }
 
-export {changeAvailibility, doctorList, login, doctorAppointments}
+const appointmentComplete = async (req, res)=> {
+    try {
+        const {docId, appontmentId} = req.body
+        const appointmentData = await Appointment.findById(appontmentId)
+
+        if(appointmentData && appointmentData.docId === docId) {
+            await Appointment.findByIdAndUpdate(appontmentId, {isCompleted: true})
+            return res.json({success: true, message: "Appointment Completed"})
+        } else {
+            return res.json({success: false, message: "Mark failed"})
+        }
+    
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export {changeAvailibility, doctorList, login, doctorAppointments, appointmentComplete}
