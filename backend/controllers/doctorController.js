@@ -94,4 +94,35 @@ const cancelAppointment = async (req, res)=> {
     }
 }
 
-export {changeAvailibility, doctorList, login, doctorAppointments, completeAppointment, cancelAppointment}
+
+const doctorDashboard = async (req, res) => {
+    try {
+        const docId = req.docId
+        const appointments = await Appointment.find({docId})
+
+        let earnings = 0
+        appointments.map((item)=> {
+            if(item.isCompleted || item.payment) {
+                earnings += item.amount
+            }
+        })
+
+        let patients = 0
+        appointments.map((item=> {
+            if(!patients.includes(item.userId)) {
+                patients.push(item.userId)
+            }
+        }))
+
+        const dashData = {
+            earnings,
+            appointments: appointments.length,
+            patients: patients.length,
+            latestAppointments: appointments.reverse().slice(0, 5)
+        }
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export {changeAvailibility, doctorList, login, doctorAppointments, completeAppointment, cancelAppointment, doctorDashboard}
