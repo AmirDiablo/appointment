@@ -70,6 +70,14 @@ const DoctorContextProvider = (props) => {
     }
   }
 
+  const getDoctorProfile = async () => {
+    try {
+      const {data} = await axios.post(backendUrl + "/api/doctor/profile", )
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
   const value = {
     dToken, setDToken, backendUrl,
     appointments, setAppointments, getAppointments,

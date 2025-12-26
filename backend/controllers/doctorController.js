@@ -138,4 +138,17 @@ const doctorProfile = async (req, res) => {
     }
 }
 
-export {changeAvailibility, doctorList, login, doctorAppointments, completeAppointment, cancelAppointment, doctorDashboard}
+const updateDoctorProfile = async (req, res) => {
+    try {
+        const docId = req.docId
+        const {fess, address, available} = req.body
+
+        await Doctor.findByIdAndUpdate(docId, {fees, address, available})
+
+        res.json({success: true, message: "Profile Updated"})
+    } catch (error) {
+        res.json({success: false, message: error.message})
+    }
+}
+
+export {changeAvailibility, doctorList, login, doctorAppointments, completeAppointment, cancelAppointment, doctorDashboard, doctorProfile, updateDoctorProfile}
