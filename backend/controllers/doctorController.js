@@ -107,7 +107,7 @@ const doctorDashboard = async (req, res) => {
             }
         })
 
-        let patients = 0
+        let patients = []
         appointments.map((item=> {
             if(!patients.includes(item.userId)) {
                 patients.push(item.userId)
@@ -120,6 +120,8 @@ const doctorDashboard = async (req, res) => {
             patients: patients.length,
             latestAppointments: appointments.reverse().slice(0, 5)
         }
+
+        res.json({success: true, dashData})
     } catch (error) {
         res.json({success: false, message: error.message})
     }
