@@ -141,7 +141,7 @@ const doctorProfile = async (req, res) => {
 const updateDoctorProfile = async (req, res) => {
     try {
         const docId = req.docId
-        const {fess, address, available} = req.body
+        const {fees, address, available} = req.body
 
         await Doctor.findByIdAndUpdate(docId, {fees, address, available})
 
